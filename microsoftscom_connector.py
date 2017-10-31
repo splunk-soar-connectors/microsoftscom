@@ -14,8 +14,10 @@
 
 # Standard library imports
 import json
+import ipaddress
 from winrm.protocol import Protocol
 from winrm.exceptions import InvalidCredentialsError
+from winrm.exceptions import WinRMTransportError
 from requests import exceptions
 
 # Phantom App imports
@@ -103,6 +105,14 @@ class MicrosoftScomConnector(BaseConnector):
             self.debug_print(MSSCOM_ERR_SERVER_CONNECTION, conn_err)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERR_SERVER_CONNECTION,
                                             conn_err), resp_output
+        except WinRMTransportError as transport_err:
+            self.debug_print(MSSCOM_TRANSPORT_ERR, transport_err)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERR,
+                                            transport_err), resp_output
+        except Exception as e:
+            self.debug_print(MSSCOM_EXCEPTION_OCCURRED, e)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
+                                            e), resp_output
 
         try:
             # Execute command
@@ -215,6 +225,62 @@ class MicrosoftScomConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_get_device_info(self, param):
+        """ This function is used to list all endpoints.
+
+        :param param: dictionary of input parameters
+        :return: status success/failure
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Optional values should use the .get() function
+        ip_address = param.get("ip")
+        computer_name = param.get("computer_name")
+
+        if not (ip_address or computer_name):
+            self.debug_print(MSSCOM_PARAM_NOT_SPECIFIED.format("ip", "computer_name"))
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_PARAM_NOT_SPECIFIED.format("ip", "computer_name"))
+
+        # Prepare power shell command
+        command = "{cmd} -DNSHostName *.* | {json}".format(cmd=MSSCOM_GET_SCOM_AGENT_COMMAND,
+                                                           json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+
+        # Execute power shell command
+        status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
+
+        # Something went wrong while executing power shell command
+        if phantom.is_fail(status):
+            self.debug_print(action_result.get_message())
+            return action_result.get_status()
+
+        try:
+            if response:
+                response = json.loads(response)
+                # Add data to action_result
+                for item in response:
+                    # If both parameters are present, priority is given to IP
+                    if ip_address:
+                        ip_list = item["IPAddress"].replace(" ", "").split(",")
+                        for value in ip_list:
+                            if ip_address == value:
+                                action_result.add_data(item)
+                                break
+                    elif computer_name == item["ComputerName"]:
+                        action_result.add_data(item)
+                        break
+        except Exception as e:
+            self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)
+
+        if not action_result.get_data_size():
+            return action_result.set_status(phantom.APP_ERROR, "Device not found")
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Device found")
+
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.
 
@@ -223,9 +289,12 @@ class MicrosoftScomConnector(BaseConnector):
         """
 
         # Dictionary mapping each action with its corresponding actions
-        action_mapping = {'test_connectivity': self._handle_test_connectivity,
-                          'list_endpoints': self._handle_list_endpoints,
-                          'list_alerts': self._handle_list_alerts}
+        action_mapping = {
+            'test_connectivity': self._handle_test_connectivity,
+            'list_endpoints': self._handle_list_endpoints,
+            'list_alerts': self._handle_list_alerts,
+            'get_device_info': self._handle_get_device_info
+        }
         action = self.get_action_identifier()
         try:
             run_action = action_mapping[action]
@@ -256,7 +325,26 @@ class MicrosoftScomConnector(BaseConnector):
         # Optional config parameter
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
 
+        # Custom validation for IP address
+        self.set_validator("ip", self._is_ip)
+
         return phantom.APP_SUCCESS
+
+    def _is_ip(self, ip_address):
+        """ Function that checks given address and return True if address is valid IPv4 or IPv6 address.
+
+        :param ip_address: IP address
+        :return: status (success/failure)
+        """
+
+        # Validate IP address
+        try:
+            ipaddress.ip_address(unicode(ip_address))
+        except ValueError:
+            self.debug_print("Parameter 'ip' failed validation")
+            return False
+
+        return True
 
     def finalize(self):
         """ This function gets called once all the param dictionary elements are looped over and no more handle_action
