@@ -37,7 +37,7 @@ def _get_ctx_result(provides, result):
         ctx_result['data'] = {}
         return ctx_result
 
-    if provides == "list endpoints":
+    if provides == "list endpoints" or provides == "get device info":
         for item in data:
             item['IPAddress'] = item['IPAddress'].replace(' ', '').split(',')
 

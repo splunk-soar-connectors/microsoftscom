@@ -1,7 +1,7 @@
 {
   "appid": "e0157bc7-f2fe-45b4-a3cc-981d303acff0",
   "name": "Microsoft SCOM",
-  "description": "Integrate with Microsoft System Center Operations Manager (SCOM) to execute <b>investigative</b> actions",
+  "description": "This app integrates with Microsoft System Center Operations Manager (SCOM) to execute <b>investigative</b> actions",
   "type": "endpoint",
   "product_vendor": "Microsoft",
   "logo": "microsoftscom.png",
@@ -98,11 +98,11 @@
         }
       },
       "render": {
-        "width": 12,
-        "height": 5,
-        "type": "custom",
-        "title": "List endpoints",
-        "view": "microsoftscom_view.display_action_details"
+          "width": 12,
+          "height": 5,
+          "type": "custom",
+          "title": "List endpoints",
+          "view": "microsoftscom_view.display_action_details"
       },
       "output": [
         {
@@ -199,7 +199,7 @@
           "data_path": "action_result.data.*.IPAddress",
           "data_type": "string",
           "example_values": [
-            "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
+              "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
           ],
           "contains": [
             "ip"
@@ -350,7 +350,7 @@
           "example_values": [
             "test.local"
           ],
-          "contains": [
+          "contains":[
             "domain"
           ]
         },
@@ -488,7 +488,7 @@
           "data_path": "action_result.data.*.ProblemId",
           "data_type": "string",
           "example_values": [
-            "09deffed-41eb-a1ef-376a-b94c0ea1c4b4"
+              "09deffed-41eb-a1ef-376a-b94c0ea1c4b4"
           ]
         },
         {
@@ -852,6 +852,323 @@
         "title": "List alerts",
         "view": "microsoftscom_view.display_action_details"
       },
+      "versions": "EQ(*)"
+    },
+    {
+      "action": "get device info",
+      "identifier": "get_device_info",
+      "description": "Get information about a device",
+      "verbose": "Either <b>ip</b> or <b>computer_name</b> needs to be specified. If <b>ip</b> is provided <b>computer_name</b> is ignored.",
+      "type": "investigate",
+      "read_only": true,
+      "parameters": {
+        "ip": {
+          "description": "IP address",
+          "data_type": "string",
+          "required": false,
+          "primary": true,
+          "value_list": [],
+          "default": "",
+          "order": 0,
+          "contains": [
+            "ip"
+          ]
+        },
+        "computer_name": {
+          "description": "Computer name",
+          "data_type": "string",
+          "required": false,
+          "primary": true,
+          "value_list": [],
+          "default": "",
+          "order": 1,
+          "contains": [
+            "host name"
+          ]
+        }
+      },
+      "render": {
+        "width": 12,
+        "height": 5,
+        "type": "custom",
+        "title": "Device Info",
+        "view": "microsoftscom_view.display_action_details"
+      },
+      "output": [
+        {
+          "data_path": "action_result.data.*.HealthState",
+          "data_type": "string",
+          "example_values": [
+            "Success"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.DisplayName",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.InstallTime",
+          "data_type": "string",
+          "example_values": [
+            "08-09-2017 05:47:56"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.PrimaryManagementServerName",
+          "data_type": "string",
+          "example_values": [
+            "SCOMSERVER.test.local"
+          ],
+          "contains": [
+            "host name"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.LastModified",
+          "data_type": "string",
+          "example_values": [
+            "08-09-2017 06:08:33"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.CommunicationPort",
+          "data_type": "string",
+          "example_values": [
+            "5723"
+          ],
+          "contains": [
+            "port"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.CreateListener",
+          "data_type": "string",
+          "example_values": [
+            "False"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.Version",
+          "data_type": "string",
+          "example_values": [
+            "8.0.10918.0"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.AuthenticationName",
+          "data_type": "string",
+          "example_values": [
+            ""
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.HeartbeatInterval",
+          "data_type": "string",
+          "example_values": [
+            "60"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.HostedHealthService",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.MaximumQueueSizeBytes",
+          "data_type": "string",
+          "example_values": [
+            "104857600"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.IPAddress",
+          "data_type": "string",
+          "example_values": [
+            "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
+          ],
+          "contains": [
+            "ip"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ComputerName",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN"
+          ],
+          "contains": [
+            "host name"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.Name",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ],
+          "contains": [
+            "host name"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.PatchList",
+          "data_type": "string",
+          "example_values": [
+            ""
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ProxyingEnabled",
+          "data_type": "string",
+          "example_values": [
+            "False"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ManuallyInstalled",
+          "data_type": "string",
+          "example_values": [
+            "False"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ManagementGroupId",
+          "data_type": "string",
+          "example_values": [
+            "00000000-0000-0000-0000-000000000000"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ManagementGroup",
+          "data_type": "string",
+          "example_values": [
+            "SCOM2016_DEMO"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.Domain",
+          "data_type": "string",
+          "example_values": [
+            "test.local"
+          ],
+          "contains": [
+            "domain"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.MaximumSizeOfAllTransferredFilesBytes",
+          "data_type": "string",
+          "example_values": [
+            "0"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.ActionAccountIdentity",
+          "data_type": "string",
+          "example_values": [
+            "SYSTEM"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.PrincipalName",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.HostComputer",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.RequestCompression",
+          "data_type": "string",
+          "example_values": [
+            "True"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.InstalledBy",
+          "data_type": "string",
+          "example_values": [
+            "SCOMSERVER\\Administrator"
+          ],
+          "contains": [
+            "user name"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.NetworkName",
+          "data_type": "string",
+          "example_values": [
+            "SCCMADMIN.test.local"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.Id",
+          "data_type": "string",
+          "example_values": [
+            "c4cbd5e4-7379-302d-e4ee-3af1548b5196"
+          ]
+        },
+        {
+          "data_path": "action_result.status",
+          "data_type": "string",
+          "example_values": [
+            "success",
+            "failed"
+          ]
+        },
+        {
+          "data_path": "action_result.message",
+          "data_type": "string",
+          "example_values": [
+            "Device found"
+          ]
+        },
+        {
+          "data_path": "action_result.parameter.ip",
+          "data_type": "string",
+          "example_values": [
+            "1.2.3.4"
+          ],
+          "contains": [
+            "ip"
+          ]
+        },
+        {
+          "data_path": "action_result.parameter.computer_name",
+          "data_type": "string",
+          "example_values": [
+            "admin-PC"
+          ],
+          "contains": [
+            "host name"
+          ]
+        },
+        {
+          "data_path": "summary.total_objects",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        },
+        {
+          "data_path": "summary.total_objects_successful",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        }
+      ],
       "versions": "EQ(*)"
     }
   ]
