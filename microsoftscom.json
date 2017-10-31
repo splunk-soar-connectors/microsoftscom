@@ -9,8 +9,8 @@
   "product_version_regex": ".*",
   "publisher": "Phantom",
   "license": "Copyright Phantom 2017",
-  "app_version": "1.0.2",
-  "utctime_updated": "2017-10-19T18:22:19.000000Z",
+  "app_version": "1.0.3",
+  "utctime_updated": "2017-10-31T21:57:11.000000Z",
   "package_name": "phantom_microsoftscom",
   "main_module": "microsoftscom_connector.pyc",
   "min_phantom_version": "3.0.247",
@@ -98,11 +98,11 @@
         }
       },
       "render": {
-          "width": 12,
-          "height": 5,
-          "type": "custom",
-          "title": "List endpoints",
-          "view": "microsoftscom_view.display_action_details"
+        "width": 12,
+        "height": 5,
+        "type": "custom",
+        "title": "List endpoints",
+        "view": "microsoftscom_view.display_action_details"
       },
       "output": [
         {
@@ -199,7 +199,7 @@
           "data_path": "action_result.data.*.IPAddress",
           "data_type": "string",
           "example_values": [
-              "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
+            "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
           ],
           "contains": [
             "ip"
@@ -350,7 +350,7 @@
           "example_values": [
             "test.local"
           ],
-          "contains":[
+          "contains": [
             "domain"
           ]
         },
@@ -488,7 +488,7 @@
           "data_path": "action_result.data.*.ProblemId",
           "data_type": "string",
           "example_values": [
-              "09deffed-41eb-a1ef-376a-b94c0ea1c4b4"
+            "09deffed-41eb-a1ef-376a-b94c0ea1c4b4"
           ]
         },
         {
