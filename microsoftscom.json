@@ -59,8 +59,6 @@
       "description": "Password",
       "data_type": "password",
       "required": true,
-      "value_list": [],
-      "default": "",
       "order": 3
     }
   },
