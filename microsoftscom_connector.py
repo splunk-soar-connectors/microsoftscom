@@ -61,7 +61,7 @@ class MicrosoftScomConnector(BaseConnector):
         # Something went wrong
         if phantom.is_fail(status):
             self.debug_print(action_result.get_message())
-            self.save_progress("{0} Error: {1}".format(MSSCOM_TEST_CONNECTIVITY_FAIL, action_result.get_message()))
+            self.save_progress(MSSCOM_TEST_CONNECTIVITY_FAIL)
             return action_result.get_status()
 
         # Return success
@@ -211,10 +211,8 @@ class MicrosoftScomConnector(BaseConnector):
         try:
             if response:
                 response = json.loads(response)
-                # Filter response to get only new alerts
                 for item in response:
-                    if item['ResolutionState'] == "0":
-                        action_result.add_data(item)
+                    action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)

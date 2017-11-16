@@ -43,7 +43,20 @@ def _get_ctx_result(provides, result):
 
     if provides == "list alerts":
         for item in data:
-            item['ResolutionState'] = "New"
+            if item['ResolutionState'] == "0":
+                item['ResolutionState'] = "New"
+            elif item['ResolutionState'] == "247":
+                item['ResolutionState'] = "Awaiting Evidence"
+            elif item['ResolutionState'] == "248":
+                item['ResolutionState'] = "Assigned to Engineering"
+            elif item['ResolutionState'] == "249":
+                item['ResolutionState'] = "Acknowledged"
+            elif item['ResolutionState'] == "250":
+                item['ResolutionState'] = "Scheduled"
+            elif item['ResolutionState'] == "254":
+                item['ResolutionState'] = "Resolved"
+            elif item['ResolutionState'] == "255":
+                item['ResolutionState'] = "Closed"
 
     ctx_result['data'] = data
 
