@@ -13,7 +13,7 @@
   "utctime_updated": "2017-11-14T22:20:54.000000Z",
   "package_name": "phantom_microsoftscom",
   "main_module": "microsoftscom_connector.pyc",
-  "min_phantom_version": "3.0.251",
+  "min_phantom_version": "2.0.251",
   "app_wizard_version": "1.0.0",
   "pip_dependencies": {
     "wheel": [
@@ -36,8 +36,6 @@
       "description": "Server URL",
       "data_type": "string",
       "required": true,
-      "value_list": [],
-      "default": "",
       "order": 0
     },
     "verify_server_cert": {
@@ -51,8 +49,6 @@
       "description": "Username",
       "data_type": "string",
       "required": true,
-      "value_list": [],
-      "default": "",
       "order": 2
     },
     "password": {
@@ -87,8 +83,6 @@
           "data_type": "string",
           "required": false,
           "primary": true,
-          "value_list": [],
-          "default": "",
           "order": 0,
           "contains": [
             "domain"
@@ -389,8 +383,6 @@
           "data_type": "string",
           "required": false,
           "primary": true,
-          "value_list": [],
-          "default": "",
           "order": 0,
           "contains": [
             "host name"
@@ -855,7 +847,7 @@
     {
       "action": "get device info",
       "identifier": "get_device_info",
-      "description": "Get information about a device",
+      "description": "Get information about device",
       "verbose": "Either <b>ip</b> or <b>computer_name</b> needs to be specified. If <b>ip</b> is provided <b>computer_name</b> is ignored.",
       "type": "investigate",
       "read_only": true,
@@ -865,8 +857,6 @@
           "data_type": "string",
           "required": false,
           "primary": true,
-          "value_list": [],
-          "default": "",
           "order": 0,
           "contains": [
             "ip"
@@ -877,8 +867,6 @@
           "data_type": "string",
           "required": false,
           "primary": true,
-          "value_list": [],
-          "default": "",
           "order": 1,
           "contains": [
             "host name"
@@ -886,11 +874,11 @@
         }
       },
       "render": {
-        "width": 12,
-        "height": 5,
-        "type": "custom",
-        "title": "Device Info",
-        "view": "microsoftscom_view.display_action_details"
+          "width": 12,
+          "height": 5,
+          "type": "custom",
+          "title": "Device Info",
+          "view": "microsoftscom_view.display_action_details"
       },
       "output": [
         {
@@ -987,7 +975,7 @@
           "data_path": "action_result.data.*.IPAddress",
           "data_type": "string",
           "example_values": [
-            "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
+              "10.0.1.97, fe80::c12e:6326:d283:12c7, fdfe:9042:c53d:0:c12e:6326:d283:12c7, fda7:e6ee:2e09:0:c12e:6326:d283:12c7"
           ],
           "contains": [
             "ip"
@@ -1138,7 +1126,7 @@
           "example_values": [
             "1.2.3.4"
           ],
-          "contains": [
+          "contains":[
             "ip"
           ]
         },
@@ -1148,7 +1136,7 @@
           "example_values": [
             "admin-PC"
           ],
-          "contains": [
+          "contains":[
             "host name"
           ]
         },
