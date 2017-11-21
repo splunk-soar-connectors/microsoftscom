@@ -212,7 +212,8 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 for item in response:
-                    action_result.add_data(item)
+                    if item["ResolutionState"] != "255":
+                        action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)

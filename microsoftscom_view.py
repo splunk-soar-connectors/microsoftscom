@@ -55,8 +55,6 @@ def _get_ctx_result(provides, result):
                 item['ResolutionState'] = "Scheduled"
             elif item['ResolutionState'] == "254":
                 item['ResolutionState'] = "Resolved"
-            elif item['ResolutionState'] == "255":
-                item['ResolutionState'] = "Closed"
 
     ctx_result['data'] = data
 
