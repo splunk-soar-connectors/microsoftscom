@@ -373,7 +373,7 @@
     {
       "action": "list alerts",
       "identifier": "list_alerts",
-      "description": "List all the alerts",
+      "description": "List all active alerts",
       "verbose": "",
       "type": "investigate",
       "read_only": true,
