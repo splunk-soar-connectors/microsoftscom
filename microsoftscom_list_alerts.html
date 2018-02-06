@@ -1,10 +1,6 @@
 {% extends 'widgets/widget_template.html' %}
 {% load custom_template %}
 
-{% block title_color %}{{ title_color|default:'white' }}{% endblock %}
-{% block title_text_color %}{{ title_text_color|default:'rgb(101, 71, 150)' }}{% endblock %}
-{% block body_color %}{{ body_color|default:'white' }}{% endblock %}
-{% block body_text_color %}{{ body_text_color|default:'black' }}{% endblock %}
 {% block custom_title_prop %}{% if title_logo %}style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image: url('/app_resource/{{ title_logo }}');"{% endif %}{% endblock %}
 {% block title1 %}{{ title1 }}{% endblock %}
 {% block title2 %}{{ title2 }}{% endblock %}
@@ -16,7 +12,7 @@
 <!--
 File: microsoftscom_list_alerts.html
 
-Copyright (c) Phantom Cyber Corporation, 2017
+Copyright (c) Phantom Cyber Corporation, 2017-2018
 
 This unpublished material is proprietary to Phantom Cyber.
 All rights reserved. The methods and
@@ -27,17 +23,11 @@ of Phantom Cyber Corporation.
 -->
 <style>
 
-    .microsoftscom-alerts a:link {
-    color: black;
-    }
 
     .microsoftscom-alerts a:hover {
     text-decoration:underline;
     }
 
-    .microsoftscom-alerts a:visited {
-    color: black;
-    }
 
     .microsoftscom-alerts .wf-h4-style {
     font-size : 16px
@@ -50,7 +40,7 @@ of Phantom Cyber Corporation.
 
     .microsoftscom-alerts .wf-table-vertical td{
     padding: 5px;
-    border: 1px solid rgb(234, 234, 234) !important;
+    border: 1px solid !important;
     }
 
     .microsoftscom-alerts .wf-table-vertical tr td:first-child {
@@ -68,7 +58,6 @@ of Phantom Cyber Corporation.
 
     .microsoftscom-alerts .dataTable td.widget-td a{
         font-size: 12px;
-        color: #000;
     }
 
     .microsoftscom-alerts .dataTable .glyphicon.glyphicon-dot:before {
@@ -122,9 +111,7 @@ of Phantom Cyber Corporation.
             <tr>
                 <td class="widget-td">
                     {% if item.Severity == "Error" %}
-                    <i class="glyphicon glyphicon-exclamation-sign severity-icon" style="color:rgb(200,15,15);"></i>
                     {% elif item.Severity == "Warning" %}
-                    <i class="glyphicon glyphicon-exclamation-sign severity-icon" style="color:rgb(232,154,32);"></i>
                     {% endif %}
                 </td>
                 <td class="widget-td">{{ item.Severity }}</td>
