@@ -14,7 +14,7 @@
 
 # Standard library imports
 import json
-import ipaddress
+# import ipaddress
 from winrm.protocol import Protocol
 from winrm.exceptions import InvalidCredentialsError
 from winrm.exceptions import WinRMTransportError
@@ -163,8 +163,11 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                for item in response:
-                    action_result.add_data(item)
+                if type(response) is dict:
+                    action_result.add_data(response)
+                else:
+                    for item in response:
+                        action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)
@@ -260,17 +263,27 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                for item in response:
-                    # If both parameters are present, priority is given to IP
+                if type(response) is dict:
                     if ip_address:
-                        ip_list = item["IPAddress"].replace(" ", "").split(",")
+                        ip_list = response["IPAddress"].replace(" ", "").split(",")
                         for value in ip_list:
                             if ip_address == value:
-                                action_result.add_data(item)
+                                action_result.add_data(response)
                                 break
                     elif computer_name == item["ComputerName"]:
-                        action_result.add_data(item)
-                        break
+                        action_result.add_data(response)
+                else:
+                    for item in response:
+                        # If both parameters are present, priority is given to IP
+                        if ip_address:
+                            ip_list = item["IPAddress"].replace(" ", "").split(",")
+                            for value in ip_list:
+                                if ip_address == value:
+                                    action_result.add_data(item)
+                                    break
+                        elif computer_name == item["ComputerName"]:
+                            action_result.add_data(item)
+                            break
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)
@@ -325,25 +338,25 @@ class MicrosoftScomConnector(BaseConnector):
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
 
         # Custom validation for IP address
-        self.set_validator("ip", self._is_ip)
+        # self.set_validator("ip", self._is_ip)
 
         return phantom.APP_SUCCESS
 
-    def _is_ip(self, ip_address):
-        """ Function that checks given address and return True if address is valid IPv4 or IPv6 address.
+    # def _is_ip(self, ip_address):
+    #     """ Function that checks given address and return True if address is valid IPv4 or IPv6 address.
 
-        :param ip_address: IP address
-        :return: status (success/failure)
-        """
+    #     :param ip_address: IP address
+    #     :return: status (success/failure)
+    #     """
 
-        # Validate IP address
-        try:
-            ipaddress.ip_address(unicode(ip_address))
-        except ValueError:
-            self.debug_print("Parameter 'ip' failed validation")
-            return False
+    #     # Validate IP address
+    #     try:
+    #         ipaddress.ip_address(unicode(ip_address))
+    #     except ValueError:
+    #         self.debug_print("Parameter 'ip' failed validation")
+    #         return False
 
-        return True
+    #     return True
 
     def finalize(self):
         """ This function gets called once all the param dictionary elements are looped over and no more handle_action
@@ -365,7 +378,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if len(sys.argv) < 2:
-        print "No test json specified as input"
+        print("No test json specified as input")
         exit(0)
 
     with open(sys.argv[1]) as f:
@@ -376,6 +389,6 @@ if __name__ == '__main__':
         connector = MicrosoftScomConnector()
         connector.print_progress_message = True
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print (json.dumps(json.loads(ret_val), indent=4))
+        print(json.dumps(json.loads(ret_val), indent=4))
 
     exit(0)
