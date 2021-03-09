@@ -8,14 +8,16 @@
     "logo_dark": "logo_microsoft_dark.svg",
     "product_name": "SCOM",
     "product_version_regex": ".*",
-    "publisher": "Phantom",
-    "license": "Copyright (c) Phantom Cyber Corporation, 2017-2018",
-    "app_version": "1.0.14",
+    "publisher": "Splunk",
+    "license": "Copyright (c) 2016-2021 Splunk Inc.",
+    "app_version": "2.0.0",
     "utctime_updated": "2019-01-24T23:38:02.000000Z",
     "package_name": "phantom_microsoftscom",
     "main_module": "microsoftscom_connector.py",
     "min_phantom_version": "4.9.39220",
-    "latest_tested_versions": [],
+    "latest_tested_versions": [
+        "On Prem, Version 7.2.11719.0"
+    ],
     "python_version": "3",
     "app_wizard_version": "1.0.0",
     "pip_dependencies": {
@@ -44,7 +46,6 @@
         "verify_server_cert": {
             "description": "Verify server certificate",
             "data_type": "boolean",
-            "required": false,
             "default": false,
             "order": 1
         },
@@ -66,7 +67,6 @@
             "action": "test connectivity",
             "identifier": "test_connectivity",
             "description": "Validate the asset configuration for connectivity using supplied configuration",
-            "verbose": "",
             "type": "test",
             "read_only": true,
             "parameters": {},
@@ -77,14 +77,12 @@
             "action": "list endpoints",
             "identifier": "list_endpoints",
             "description": "List all the endpoints/sensors configured on the device",
-            "verbose": "",
             "type": "investigate",
             "read_only": true,
             "parameters": {
                 "domain": {
                     "description": "Domain",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "order": 0,
                     "contains": [
@@ -164,10 +162,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.AuthenticationName",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.HeartbeatInterval",
@@ -222,10 +217,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.PatchList",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.ProxyingEnabled",
@@ -377,14 +369,12 @@
             "action": "list alerts",
             "identifier": "list_alerts",
             "description": "List all active alerts",
-            "verbose": "",
             "type": "investigate",
             "read_only": true,
             "parameters": {
                 "computer_name": {
                     "description": "Computer Name",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "order": 0,
                     "contains": [
@@ -409,17 +399,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.Description",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.UnformattedDescription",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.MonitoringObjectId",
@@ -451,10 +435,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.MonitoringObjectName",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.MonitoringObjectPath",
@@ -528,17 +509,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.Owner",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.ResolvedBy",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.TimeRaised",
@@ -570,10 +545,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.TimeResolved",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.TimeResolutionStateLastModified",
@@ -584,94 +556,55 @@
                 },
                 {
                     "data_path": "action_result.data.*.CustomField1",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField2",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField3",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField4",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField5",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField6",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField7",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField8",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField9",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.CustomField10",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.TicketId",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.Context",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.ConnectorId",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.LastModifiedByNonConnector",
@@ -737,10 +670,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.SiteName",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.MaintenanceModeLastModified",
@@ -765,17 +695,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.TfsWorkItemId",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.TfsWorkItemOwner",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.ManagementGroup",
@@ -858,7 +782,6 @@
                 "ip": {
                     "description": "IP address",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "order": 0,
                     "contains": [
@@ -868,7 +791,6 @@
                 "computer_name": {
                     "description": "Computer name",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "order": 1,
                     "contains": [
@@ -948,10 +870,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.AuthenticationName",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.HeartbeatInterval",
@@ -1006,10 +925,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.PatchList",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.ProxyingEnabled",
