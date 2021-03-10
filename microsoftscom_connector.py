@@ -6,7 +6,6 @@
 
 # Standard library imports
 import json
-# import ipaddress
 from winrm.protocol import Protocol
 from winrm.exceptions import InvalidCredentialsError
 from winrm.exceptions import WinRMTransportError
@@ -262,7 +261,7 @@ class MicrosoftScomConnector(BaseConnector):
                             if ip_address == value:
                                 action_result.add_data(response)
                                 break
-                    elif computer_name == item["ComputerName"]:
+                    elif computer_name == response["ComputerName"]:
                         action_result.add_data(response)
                 else:
                     for item in response:
@@ -329,26 +328,7 @@ class MicrosoftScomConnector(BaseConnector):
         # Optional config parameter
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
 
-        # Custom validation for IP address
-        # self.set_validator("ip", self._is_ip)
-
         return phantom.APP_SUCCESS
-
-    # def _is_ip(self, ip_address):
-    #     """ Function that checks given address and return True if address is valid IPv4 or IPv6 address.
-
-    #     :param ip_address: IP address
-    #     :return: status (success/failure)
-    #     """
-
-    #     # Validate IP address
-    #     try:
-    #         ipaddress.ip_address(unicode(ip_address))
-    #     except ValueError:
-    #         self.debug_print("Parameter 'ip' failed validation")
-    #         return False
-
-    #     return True
 
     def finalize(self):
         """ This function gets called once all the param dictionary elements are looped over and no more handle_action
