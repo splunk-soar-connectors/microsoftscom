@@ -154,7 +154,7 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                if type(response) is dict:
+                if isinstance(response, dict):
                     action_result.add_data(response)
                 else:
                     for item in response:
@@ -254,7 +254,7 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                if type(response) is dict:
+                if isinstance(response, dict):
                     if ip_address:
                         ip_list = response["IPAddress"].replace(" ", "").split(",")
                         for value in ip_list:
