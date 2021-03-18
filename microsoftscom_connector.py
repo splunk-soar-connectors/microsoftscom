@@ -1,20 +1,11 @@
-# --
 # File: microsoftscom_connector.py
+# Copyright (c) 2017-2021 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2017-2018
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber Corporation.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 # Standard library imports
 import json
-import ipaddress
 from winrm.protocol import Protocol
 from winrm.exceptions import InvalidCredentialsError
 from winrm.exceptions import WinRMTransportError
@@ -163,8 +154,11 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                for item in response:
-                    action_result.add_data(item)
+                if isinstance(response, dict):
+                    action_result.add_data(response)
+                else:
+                    for item in response:
+                        action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)
@@ -260,17 +254,27 @@ class MicrosoftScomConnector(BaseConnector):
             if response:
                 response = json.loads(response)
                 # Add data to action_result
-                for item in response:
-                    # If both parameters are present, priority is given to IP
+                if isinstance(response, dict):
                     if ip_address:
-                        ip_list = item["IPAddress"].replace(" ", "").split(",")
+                        ip_list = response["IPAddress"].replace(" ", "").split(",")
                         for value in ip_list:
                             if ip_address == value:
-                                action_result.add_data(item)
+                                action_result.add_data(response)
                                 break
-                    elif computer_name == item["ComputerName"]:
-                        action_result.add_data(item)
-                        break
+                    elif computer_name == response["ComputerName"]:
+                        action_result.add_data(response)
+                else:
+                    for item in response:
+                        # If both parameters are present, priority is given to IP
+                        if ip_address:
+                            ip_list = item["IPAddress"].replace(" ", "").split(",")
+                            for value in ip_list:
+                                if ip_address == value:
+                                    action_result.add_data(item)
+                                    break
+                        elif computer_name == item["ComputerName"]:
+                            action_result.add_data(item)
+                            break
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_JSON_FORMAT_ERROR, e)
@@ -324,26 +328,7 @@ class MicrosoftScomConnector(BaseConnector):
         # Optional config parameter
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
 
-        # Custom validation for IP address
-        self.set_validator("ip", self._is_ip)
-
         return phantom.APP_SUCCESS
-
-    def _is_ip(self, ip_address):
-        """ Function that checks given address and return True if address is valid IPv4 or IPv6 address.
-
-        :param ip_address: IP address
-        :return: status (success/failure)
-        """
-
-        # Validate IP address
-        try:
-            ipaddress.ip_address(unicode(ip_address))
-        except ValueError:
-            self.debug_print("Parameter 'ip' failed validation")
-            return False
-
-        return True
 
     def finalize(self):
         """ This function gets called once all the param dictionary elements are looped over and no more handle_action
@@ -365,7 +350,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if len(sys.argv) < 2:
-        print "No test json specified as input"
+        print("No test json specified as input")
         exit(0)
 
     with open(sys.argv[1]) as f:
@@ -376,6 +361,6 @@ if __name__ == '__main__':
         connector = MicrosoftScomConnector()
         connector.print_progress_message = True
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print (json.dumps(json.loads(ret_val), indent=4))
+        print(json.dumps(json.loads(ret_val), indent=4))
 
     exit(0)
