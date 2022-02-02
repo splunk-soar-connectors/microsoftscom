@@ -16,15 +16,14 @@
 #
 # Standard library imports
 import json
-from winrm.protocol import Protocol
-from winrm.exceptions import InvalidCredentialsError
-from winrm.exceptions import WinRMTransportError
-from requests import exceptions
 
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+from requests import exceptions
+from winrm.exceptions import InvalidCredentialsError, WinRMTransportError
+from winrm.protocol import Protocol
 
 # Usage of the consts file is recommended
 from microsoftscom_consts import *
@@ -355,6 +354,7 @@ class MicrosoftScomConnector(BaseConnector):
 if __name__ == '__main__':
 
     import sys
+
     import pudb
 
     pudb.set_trace()
