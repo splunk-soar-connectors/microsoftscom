@@ -27,8 +27,16 @@
                 "input_file": "wheels/shared/certifi-2021.10.8-py2.py3-none-any.whl"
             },
             {
+                "module": "cffi",
+                "input_file": "wheels/py36/cffi-1.15.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
                 "module": "chardet",
                 "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py36/cryptography-36.0.1-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
                 "module": "idna",
@@ -36,15 +44,15 @@
             },
             {
                 "module": "ntlm_auth",
-                "input_file": "wheels/shared/ntlm_auth-1.0.5-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
             },
             {
-                "module": "ordereddict",
-                "input_file": "wheels/py3/ordereddict-1.1-py3-none-any.whl"
+                "module": "pycparser",
+                "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
             },
             {
                 "module": "pywinrm",
-                "input_file": "wheels/shared/pywinrm-0.2.2-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pywinrm-0.4.2-py2.py3-none-any.whl"
             },
             {
                 "module": "requests",
@@ -52,7 +60,7 @@
             },
             {
                 "module": "requests_ntlm",
-                "input_file": "wheels/shared/requests_ntlm-1.0.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
             },
             {
                 "module": "six",
@@ -1116,5 +1124,61 @@
             ],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "certifi",
+                "input_file": "wheels/shared/certifi-2021.10.8-py2.py3-none-any.whl"
+            },
+            {
+                "module": "cffi",
+                "input_file": "wheels/py39/cffi-1.15.0-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "chardet",
+                "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py36/cryptography-36.0.1-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
+            },
+            {
+                "module": "ntlm_auth",
+                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pycparser",
+                "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pywinrm",
+                "input_file": "wheels/shared/pywinrm-0.4.2-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/shared/requests-2.25.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests_ntlm",
+                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "six",
+                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/shared/urllib3-1.26.8-py2.py3-none-any.whl"
+            },
+            {
+                "module": "xmltodict",
+                "input_file": "wheels/shared/xmltodict-0.12.0-py2.py3-none-any.whl"
+            }
+        ]
+    }
 }
