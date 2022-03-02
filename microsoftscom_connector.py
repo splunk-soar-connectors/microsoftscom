@@ -92,7 +92,7 @@ class MicrosoftScomConnector(BaseConnector):
         resp_output = None
 
         if self._get_fips_enabled():
-            protocol = Protocol(endpoint=MSSCCM_SERVER_URL.format(url=self._server_url), transport='basic',
+            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='basic',
                     username=self._username, password=self._password,
                     server_cert_validation='ignore')
         # In case of verify server certificate is false
