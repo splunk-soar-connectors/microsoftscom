@@ -120,8 +120,8 @@ class MicrosoftScomConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION,
                                             conn_err), resp_output
         except WinRMTransportError as transport_err:
-            self.debug_print(MSSCOM_TRANSPORT_ERR, transport_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERR,
+            self.debug_print(MSSCOM_TRANSPORT_ERROR, transport_err)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERROR,
                                             transport_err), resp_output
         except Exception as e:
             self.debug_print(MSSCOM_EXCEPTION_OCCURRED, e)
