@@ -104,25 +104,25 @@ class MicrosoftScomConnector(BaseConnector):
 
         try:
             shell_id = protocol.open_shell()
-        except InvalidCredentialsError as credentials_err:
+        except InvalidCredentialsError as credentials_error:
             # In case of invalid credentials
-            self.debug_print(MSSCOM_INVALID_CREDENTIAL_ERR, credentials_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERR,
-                                            credentials_err), resp_output
-        except exceptions.SSLError as ssl_err:
+            self.debug_print(MSSCOM_INVALID_CREDENTIAL_ERROR, credentials_error)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERROR,
+                                            credentials_error), resp_output
+        except exceptions.SSLError as ssl_error:
             # In case of SSL error
-            self.debug_print(MSSCOM_ERROR_BAD_HANDSHAKE, ssl_err)
+            self.debug_print(MSSCOM_ERROR_BAD_HANDSHAKE, ssl_error)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_BAD_HANDSHAKE,
-                                            ssl_err), resp_output
-        except exceptions.ConnectionError as conn_err:
+                                            ssl_error), resp_output
+        except exceptions.ConnectionError as conn_error:
             # In case of connection error
-            self.debug_print(MSSCOM_ERROR_SERVER_CONNECTION, conn_err)
+            self.debug_print(MSSCOM_ERROR_SERVER_CONNECTION, conn_error)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION,
-                                            conn_err), resp_output
-        except WinRMTransportError as transport_err:
-            self.debug_print(MSSCOM_TRANSPORT_ERROR, transport_err)
+                                            conn_error), resp_output
+        except WinRMTransportError as transport_error:
+            self.debug_print(MSSCOM_TRANSPORT_ERROR, transport_error)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERROR,
-                                            transport_err), resp_output
+                                            transport_error), resp_output
         except Exception as e:
             self.debug_print(MSSCOM_EXCEPTION_OCCURRED, e)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
@@ -131,7 +131,7 @@ class MicrosoftScomConnector(BaseConnector):
         try:
             # Execute command
             command_id = protocol.run_command(shell_id, ps_command)
-            resp_output, resp_err, status_code = protocol.get_command_output(shell_id, command_id)
+            resp_output, resp_error, status_code = protocol.get_command_output(shell_id, command_id)
             protocol.cleanup_command(shell_id, command_id)
             protocol.close_shell(shell_id)
         except Exception as err:
@@ -142,7 +142,7 @@ class MicrosoftScomConnector(BaseConnector):
         # In case of error in command execution
         if status_code:
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
-                                            resp_err), resp_output
+                                            resp_error), resp_output
 
         return action_result.set_status(phantom.APP_SUCCESS), resp_output
 
