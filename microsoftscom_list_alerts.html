@@ -10,7 +10,7 @@
 {% block widget_content %} <!-- Main Start Block -->
 
 <!--File: microsoftscom_list_alerts.html
-Copyright (c) 2017-2022 Splunk Inc.
+Copyright (c) 2017-2023 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ and limitations under the License.
         <table class="phantom-table dataTable">
             <thead>
             <tr>
+                <th class="widget-th">Alert ID</th>
                 <th class="widget-th">Severity</th>
                 <th class="widget-th">Source</th>
                 <th class="widget-th">Name</th>
@@ -110,11 +111,7 @@ and limitations under the License.
             <tbody>
             {% for item in result.data %}
             <tr>
-                <td class="widget-td">
-                    {% if item.Severity == "Error" %}
-                    {% elif item.Severity == "Warning" %}
-                    {% endif %}
-                </td>
+                <td class="widget-td">{{ item.Id }}</td>
                 <td class="widget-td">{{ item.Severity }}</td>
                 <td class="widget-td">{{ item.MonitoringObjectDisplayName }}</td>
                 <td class="widget-td">{{ item.Name }}</td>

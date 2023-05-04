@@ -1,6 +1,6 @@
 # File: microsoftscom_connector.py
 #
-# Copyright (c) 2017-2022 Splunk Inc.
+# Copyright (c) 2017-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -90,20 +90,17 @@ class MicrosoftScomConnector(BaseConnector):
         """
 
         resp_output = None
+        server_cert_validation = 'ignore'
+        transport = 'ntlm'
 
         if self._get_fips_enabled():
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='basic',
-                    username=self._username, password=self._password,
-                    server_cert_validation='ignore')
-        # In case of verify server certificate is false
-        elif not self._verify_server_cert:
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='ntlm',
-                                username=self._username, password=self._password,
-                                server_cert_validation='ignore')
-        else:
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='ntlm',
-                                username=self._username, password=self._password,
-                                server_cert_validation='validate')
+            transport = 'basic'
+        elif self._verify_server_cert:
+            server_cert_validation = 'validate'
+
+        protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
+                            username=self._username, password=self._password,
+                            server_cert_validation=server_cert_validation)
 
         try:
             shell_id = protocol.open_shell()
@@ -230,9 +227,15 @@ class MicrosoftScomConnector(BaseConnector):
         # Add data to action_result
         try:
             if response:
-                response = json.loads(response)
-                for item in response:
-                    if item["ResolutionState"] != "255":
+                resp_ans = response = json.loads(response)
+                # Getting response as dict object when only one alert is available
+                # Therefore converting the dict to list of dictionary to avoid AttributeError
+                if isinstance(response, dict):
+                    # Override the resp_ans from dict to list
+                    resp_ans = []
+                    resp_ans.append(response)
+                for item in resp_ans:
+                    if item.get("ResolutionState") != "255":
                         action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
@@ -281,6 +284,7 @@ class MicrosoftScomConnector(BaseConnector):
                 response = json.loads(response)
                 # Add data to action_result
                 if isinstance(response, dict):
+                    # If both parameters are present, priority is given to IP
                     if ip_address:
                         ip_list = response["IPAddress"].replace(" ", "").split(",")
                         for value in ip_list:
@@ -341,7 +345,12 @@ class MicrosoftScomConnector(BaseConnector):
         called.
         """
 
+        # Load the state in initialize, use it to store data
+        # that needs to be accessed across actions
         self._state = self.load_state()
+        if not isinstance(self._state, dict):
+            self.debug_print("Resetting the state file with the default format")
+            self._state = {"app_version": self.get_app_json().get("app_version")}
 
         # Get the asset config
         config = self.get_config()
