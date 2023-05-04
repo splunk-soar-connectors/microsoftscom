@@ -111,13 +111,13 @@ class MicrosoftScomConnector(BaseConnector):
                                             credentials_err), resp_output
         except exceptions.SSLError as ssl_err:
             # In case of SSL error
-            self.debug_print(MSSCOM_ERR_BAD_HANDSHAKE, ssl_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERR_BAD_HANDSHAKE,
+            self.debug_print(MSSCOM_ERROR_BAD_HANDSHAKE, ssl_err)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_BAD_HANDSHAKE,
                                             ssl_err), resp_output
         except exceptions.ConnectionError as conn_err:
             # In case of connection error
-            self.debug_print(MSSCOM_ERR_SERVER_CONNECTION, conn_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERR_SERVER_CONNECTION,
+            self.debug_print(MSSCOM_ERROR_SERVER_CONNECTION, conn_err)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION,
                                             conn_err), resp_output
         except WinRMTransportError as transport_err:
             self.debug_print(MSSCOM_TRANSPORT_ERR, transport_err)
