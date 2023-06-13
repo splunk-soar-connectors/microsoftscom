@@ -122,7 +122,7 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**computer_name** |  optional  | Computer Name | string |  `host name` 
+**computer_name** |  optional  | Computer Name (Primary Management Server Name of endpoint) | string |  `host name` 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
