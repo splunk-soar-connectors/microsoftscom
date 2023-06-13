@@ -391,7 +391,7 @@
             "read_only": true,
             "parameters": {
                 "computer_name": {
-                    "description": "Computer Name",
+                    "description": "Computer Name (Primary Management Server Name of endpoint)",
                     "data_type": "string",
                     "primary": true,
                     "order": 0,
