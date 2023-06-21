@@ -137,6 +137,7 @@ and limitations under the License.
                 <th class="widget-th">Computer Name</th>
                 <th class="widget-th">Primary Management Server Name</th>
                 <th class="widget-th">IP Address</th>
+                <th class="widget-th">Communication Port</th>
                 <th class="widget-th">Domain</th>
                 <th class="widget-th">Health State</th>
                 <th class="widget-th">Network Name</th>
@@ -160,7 +161,6 @@ and limitations under the License.
                 <th class="widget-th">Patch List</th>
                 <th class="widget-th">Request Compression</th>
                 <th class="widget-th">Installed By</th>
-                <th class="widget-th">Communication Port</th>
                 <th class="widget-th">Heartbeat Interval</th>
             </tr>
             </thead>
@@ -198,6 +198,14 @@ and limitations under the License.
                         <br/>
                     {% endfor %}
                 </td>
+                <td class="widget-td">
+                    <a href="javascript:;"
+                       onclick="context_menu(this, [{'contains': ['port'], 'value': '{{ item.CommunicationPort }}' }], 0, {{ container.id }}, null, false);">
+                        {{ item.CommunicationPort }}
+                        &nbsp;
+                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
+                    </a>
+                </td>
                 <td class="widget-td">{{ item.HealthState }}</td>
                 <td class="widget-td">
                     <a href="javascript:;"
@@ -224,15 +232,10 @@ and limitations under the License.
                 <td class="widget-td">{{ item.AuthenticationName }}</td>
                 <td class="widget-td">{{ item.CreateListener }}</td>
                 <td class="widget-td">{{ item.HostedHealthService }}</td>
-
-
-
-
                 <td class="widget-td">{{ item.MaximumQueueSizeBytes }}</td>
                 <td class="widget-td">{{ item.ManuallyInstalled }}</td>
                 <td class="widget-td">{{ item.ManagementGroupId }}</td>
                 <td class="widget-td">{{ item.ManagementGroup }}</td>
-
                 <td class="widget-td">{{ item.ActionAccountIdentity }}</td>
                 <td class="widget-td">{{ item.MaximumSizeOfAllTransferredFilesBytes }}</td>
                 <td class="widget-td">{{ item.HostComputer }}</td>
@@ -243,14 +246,6 @@ and limitations under the License.
                     <a href="javascript:;"
                        onclick="context_menu(this, [{'contains': ['user name'], 'value': '{{ item.InstalledBy }}' }], 0, {{ container.id }}, null, false);">
                         {{ item.InstalledBy }}
-                        &nbsp;
-                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
-                    </a>
-                </td>
-                <td class="widget-td">
-                    <a href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['port'], 'value': '{{ item.CommunicationPort }}' }], 0, {{ container.id }}, null, false);">
-                        {{ item.CommunicationPort }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                     </a>
