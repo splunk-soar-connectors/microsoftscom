@@ -15,6 +15,7 @@
 #
 #
 # Standard library imports
+import ipaddress
 import json
 
 # Phantom App imports
@@ -76,9 +77,9 @@ class MicrosoftScomConnector(BaseConnector):
 
         fips_enabled = is_fips_enabled()
         if fips_enabled:
-            self.debug_print('FIPS is enabled')
+            self.debug_print("FIPS is enabled")
         else:
-            self.debug_print('FIPS is not enabled')
+            self.debug_print("FIPS is not enabled")
         return fips_enabled
 
     def _execute_ps_command(self, action_result, ps_command):
@@ -247,6 +248,20 @@ class MicrosoftScomConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _validate_ip(self, input_ip_address):
+        """
+        Function that checks given address and return True if address is valid IPv4 or IPV6 address.
+
+        :param input_ip_address: IP address
+        :return: status (success/failure)
+        """
+        try:
+            ipaddress.ip_address(input_ip_address)
+        except Exception as e:
+            self.error_print("Error while validating IP.", e)
+            return False
+        return True
+
     def _handle_get_device_info(self, param):
         """ This function is used to list all endpoints.
 
@@ -354,7 +369,7 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Get the asset config
         config = self.get_config()
-
+        self.set_validator("ipv6", self._validate_ip)
         # Required config parameter
         self._server_url = config[MSSCOM_CONFIG_SERVER_URL].strip("/")
         self._username = config[MSSCOM_CONFIG_USERNAME]
