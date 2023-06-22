@@ -228,14 +228,13 @@ class MicrosoftScomConnector(BaseConnector):
         # Add data to action_result
         try:
             if response:
-                resp_ans = response = json.loads(response)
+                response = json.loads(response)
                 # Getting response as dict object when only one alert is available
                 # Therefore converting the dict to list of dictionary to avoid AttributeError
                 if isinstance(response, dict):
                     # Override the resp_ans from dict to list
-                    resp_ans = []
-                    resp_ans.append(response)
-                for item in resp_ans:
+                    response = [response]
+                for item in response:
                     if item.get("ResolutionState") != "255":
                         action_result.add_data(item)
         except Exception as e:

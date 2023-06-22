@@ -1,2 +1,2 @@
 **Unreleased**
-* Bug fix of 'list alerts' action [PAPP-30246]
+* Bug fix related to response handling in 'list alerts' action [PAPP-30246]
