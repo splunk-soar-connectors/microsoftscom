@@ -96,7 +96,8 @@ class MicrosoftScomConnector(BaseConnector):
 
         if self._get_fips_enabled():
             transport = 'basic'
-        elif self._verify_server_cert:
+
+        if self._verify_server_cert:
             server_cert_validation = 'validate'
 
         protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
