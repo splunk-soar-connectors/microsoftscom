@@ -1,6 +1,6 @@
 # File: microsoftscom_consts.py
 #
-# Copyright (c) 2017-2022 Splunk Inc.
+# Copyright (c) 2017-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ MSSCOM_CONFIG_PASSWORD = "password"  # pragma: allowlist secret
 MSSCOM_CONFIG_VERIFY_SSL = "verify_server_cert"
 MSSCOM_SERVER_URL = "{url}/wsman"
 MSSCOM_CONNECTING_ENDPOINT_MSG = "Connecting to endpoint"
-MSSCOM_ERR_SERVER_CONNECTION = "Connection failed"
-MSSCOM_TRANSPORT_ERR = "Connection error: Bad configuration in SCOM"
-MSSCOM_ERR_BAD_HANDSHAKE = "Bad Handshake"
-MSSCOM_INVALID_CREDENTIAL_ERR = "Invalid Credentials"
+MSSCOM_ERROR_SERVER_CONNECTION = "Connection failed"
+MSSCOM_TRANSPORT_ERROR = "Connection error: Bad configuration in SCOM"
+MSSCOM_ERROR_BAD_HANDSHAKE = "Bad Handshake"
+MSSCOM_INVALID_CREDENTIAL_ERROR = "Invalid Credentials"
 MSSCOM_EXCEPTION_OCCURRED = "Exception occurred"
-MSSCOM_TEST_CONNECTIVITY_FAIL = "Test Connectivity Failed."
+MSSCOM_TEST_CONNECTIVITY_FAIL = "Test Connectivity Failed"
 MSSCOM_TEST_CONNECTIVITY_PASS = "Test Connectivity Passed"
 MSSCOM_PS_COMMAND = 'powershell -command "{command}"'
 MSSCOM_PARAM_DOMAIN = "domain"
