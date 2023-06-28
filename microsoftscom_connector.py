@@ -1,6 +1,6 @@
 # File: microsoftscom_connector.py
 #
-# Copyright (c) 2017-2022 Splunk Inc.
+# Copyright (c) 2017-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #
 #
 # Standard library imports
+import ipaddress
 import json
 
 # Phantom App imports
@@ -76,9 +77,9 @@ class MicrosoftScomConnector(BaseConnector):
 
         fips_enabled = is_fips_enabled()
         if fips_enabled:
-            self.debug_print('FIPS is enabled')
+            self.debug_print("FIPS is enabled")
         else:
-            self.debug_print('FIPS is not enabled')
+            self.debug_print("FIPS is not enabled")
         return fips_enabled
 
     def _execute_ps_command(self, action_result, ps_command):
@@ -90,42 +91,40 @@ class MicrosoftScomConnector(BaseConnector):
         """
 
         resp_output = None
+        server_cert_validation = 'ignore'
+        transport = 'ntlm'
 
         if self._get_fips_enabled():
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='basic',
-                    username=self._username, password=self._password,
-                    server_cert_validation='ignore')
-        # In case of verify server certificate is false
-        elif not self._verify_server_cert:
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='ntlm',
-                                username=self._username, password=self._password,
-                                server_cert_validation='ignore')
-        else:
-            protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport='ntlm',
-                                username=self._username, password=self._password,
-                                server_cert_validation='validate')
+            transport = 'basic'
+
+        if self._verify_server_cert:
+            server_cert_validation = 'validate'
+
+        protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
+                            username=self._username, password=self._password,
+                            server_cert_validation=server_cert_validation)
 
         try:
             shell_id = protocol.open_shell()
-        except InvalidCredentialsError as credentials_err:
+        except InvalidCredentialsError as credentials_error:
             # In case of invalid credentials
-            self.debug_print(MSSCOM_INVALID_CREDENTIAL_ERR, credentials_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERR,
-                                            credentials_err), resp_output
-        except exceptions.SSLError as ssl_err:
+            self.debug_print(MSSCOM_INVALID_CREDENTIAL_ERROR, credentials_error)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERROR,
+                                            credentials_error), resp_output
+        except exceptions.SSLError as ssl_error:
             # In case of SSL error
-            self.debug_print(MSSCOM_ERR_BAD_HANDSHAKE, ssl_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERR_BAD_HANDSHAKE,
-                                            ssl_err), resp_output
-        except exceptions.ConnectionError as conn_err:
+            self.debug_print(MSSCOM_ERROR_BAD_HANDSHAKE, ssl_error)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_BAD_HANDSHAKE,
+                                            ssl_error), resp_output
+        except exceptions.ConnectionError as conn_error:
             # In case of connection error
-            self.debug_print(MSSCOM_ERR_SERVER_CONNECTION, conn_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERR_SERVER_CONNECTION,
-                                            conn_err), resp_output
-        except WinRMTransportError as transport_err:
-            self.debug_print(MSSCOM_TRANSPORT_ERR, transport_err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERR,
-                                            transport_err), resp_output
+            self.debug_print(MSSCOM_ERROR_SERVER_CONNECTION, conn_error)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION,
+                                            conn_error), resp_output
+        except WinRMTransportError as transport_error:
+            self.debug_print(MSSCOM_TRANSPORT_ERROR, transport_error)
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERROR,
+                                            transport_error), resp_output
         except Exception as e:
             self.debug_print(MSSCOM_EXCEPTION_OCCURRED, e)
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
@@ -134,7 +133,7 @@ class MicrosoftScomConnector(BaseConnector):
         try:
             # Execute command
             command_id = protocol.run_command(shell_id, ps_command)
-            resp_output, resp_err, status_code = protocol.get_command_output(shell_id, command_id)
+            resp_output, resp_error, status_code = protocol.get_command_output(shell_id, command_id)
             protocol.cleanup_command(shell_id, command_id)
             protocol.close_shell(shell_id)
         except Exception as err:
@@ -145,7 +144,7 @@ class MicrosoftScomConnector(BaseConnector):
         # In case of error in command execution
         if status_code:
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
-                                            resp_err), resp_output
+                                            resp_error), resp_output
 
         return action_result.set_status(phantom.APP_SUCCESS), resp_output
 
@@ -231,8 +230,13 @@ class MicrosoftScomConnector(BaseConnector):
         try:
             if response:
                 response = json.loads(response)
+                # Getting response as dict object when only one alert is available
+                # Therefore converting the dict to list of dictionary to avoid AttributeError
+                if isinstance(response, dict):
+                    # Override the resp_ans from dict to list
+                    response = [response]
                 for item in response:
-                    if item["ResolutionState"] != "255":
+                    if item.get("ResolutionState") != "255":
                         action_result.add_data(item)
         except Exception as e:
             self.debug_print(MSSCOM_JSON_FORMAT_ERROR)
@@ -243,6 +247,20 @@ class MicrosoftScomConnector(BaseConnector):
         summary['total_alerts'] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _validate_ip(self, input_ip_address):
+        """
+        Function that checks given address and return True if address is valid IPv4 or IPV6 address.
+
+        :param input_ip_address: IP address
+        :return: status (success/failure)
+        """
+        try:
+            ipaddress.ip_address(input_ip_address)
+        except Exception as e:
+            self.error_print("Error while validating IP.", e)
+            return False
+        return True
 
     def _handle_get_device_info(self, param):
         """ This function is used to list all endpoints.
@@ -281,6 +299,7 @@ class MicrosoftScomConnector(BaseConnector):
                 response = json.loads(response)
                 # Add data to action_result
                 if isinstance(response, dict):
+                    # If both parameters are present, priority is given to IP
                     if ip_address:
                         ip_list = response["IPAddress"].replace(" ", "").split(",")
                         for value in ip_list:
@@ -341,11 +360,16 @@ class MicrosoftScomConnector(BaseConnector):
         called.
         """
 
+        # Load the state in initialize, use it to store data
+        # that needs to be accessed across actions
         self._state = self.load_state()
+        if not isinstance(self._state, dict):
+            self.debug_print("Resetting the state file with the default format")
+            self._state = {"app_version": self.get_app_json().get("app_version")}
 
         # Get the asset config
         config = self.get_config()
-
+        self.set_validator("ipv6", self._validate_ip)
         # Required config parameter
         self._server_url = config[MSSCOM_CONFIG_SERVER_URL].strip("/")
         self._username = config[MSSCOM_CONFIG_USERNAME]

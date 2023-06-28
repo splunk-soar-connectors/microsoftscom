@@ -10,7 +10,7 @@
 {% block widget_content %} <!-- Main Start Block -->
 
 <!--File: microsoftscom_list_endpoints.html
-# Copyright (c) 2017-2022 Splunk Inc.
+# Copyright (c) 2017-2023 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -133,26 +133,27 @@ and limitations under the License.
         <table class="phantom-table dataTable">
             <thead>
             <tr>
-                <th class="widget-th">Health State</th>
-                <th class="widget-th">Display Name</th>
-                <th class="widget-th">Install Time</th>
-                <th class="widget-th">Primary Management Server Name</th>
-                <th class="widget-th">Last Modified</th>
-                <th class="widget-th">Communication Port</th>
-                <th class="widget-th">Create Listener</th>
-                <th class="widget-th">Version</th>
-                <th class="widget-th">Authentication Name</th>
-                <th class="widget-th">Heartbeat Interval</th>
-                <th class="widget-th">Hosted Health Service</th>
-                <th class="widget-th">Maximum Queue Size Bytes</th>
-                <th class="widget-th">IP Address</th>
+                <th class="widget-th">Device ID</th>
                 <th class="widget-th">Computer Name</th>
+                <th class="widget-th">Primary Management Server Name</th>
+                <th class="widget-th">IP Address</th>
+                <th class="widget-th">Communication Port</th>
+                <th class="widget-th">Domain</th>
+                <th class="widget-th">Health State</th>
+                <th class="widget-th">Network Name</th>
+                <th class="widget-th">Display Name</th>
                 <th class="widget-th">Name</th>
                 <th class="widget-th">Proxying Enabled</th>
+                <th class="widget-th">Last Modified</th>
+                <th class="widget-th">Install Time</th>
+                <th class="widget-th">Version</th>
+                <th class="widget-th">Authentication Name</th>
+                <th class="widget-th">Create Listener</th>
+                <th class="widget-th">Hosted Health Service</th>
+                <th class="widget-th">Maximum Queue Size Bytes</th>
                 <th class="widget-th">Manually Installed</th>
                 <th class="widget-th">Management Group Id</th>
                 <th class="widget-th">Management Group</th>
-                <th class="widget-th">Domain</th>
                 <th class="widget-th">Action Account Identity</th>
                 <th class="widget-th">Maximum Size Of All Transferred Files Bytes</th>
                 <th class="widget-th">Host Computer</th>
@@ -160,16 +161,21 @@ and limitations under the License.
                 <th class="widget-th">Patch List</th>
                 <th class="widget-th">Request Compression</th>
                 <th class="widget-th">Installed By</th>
-                <th class="widget-th">Network Name</th>
-                <th class="widget-th">ID</th>
+                <th class="widget-th">Heartbeat Interval</th>
             </tr>
             </thead>
             <tbody>
             {% for item in result.data %}
             <tr>
-                <td class="widget-td">{{ item.HealthState }}</td>
-                <td class="widget-td">{{ item.DisplayName }}</td>
-                <td class="widget-td">{{ item.InstallTime }}</td>
+                <td class="widget-td">{{ item.Id }}</td>
+                <td class="widget-td">
+                    <a href="javascript:;"
+                       onclick="context_menu(this, [{'contains': ['host name'], 'value': '{{ item.ComputerName }}' }], 0, {{ container.id }}, null, false);">
+                        {{ item.ComputerName }}
+                        &nbsp;
+                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
+                    </a>
+                </td>
                 <td class="widget-td">
                     <a href="javascript:;"
                        onclick="context_menu(this, [{'contains': ['host name'], 'value': '{{ item.PrimaryManagementServerName }}' }], 0, {{ container.id }}, null, false);">
@@ -178,21 +184,6 @@ and limitations under the License.
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                     </a>
                 </td>
-                <td class="widget-td">{{ item.LastModified }}</td>
-                <td class="widget-td">
-                    <a href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['port'], 'value': '{{ item.CommunicationPort }}' }], 0, {{ container.id }}, null, false);">
-                        {{ item.CommunicationPort }}
-                        &nbsp;
-                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
-                    </a>
-                </td>
-                <td class="widget-td">{{ item.CreateListener }}</td>
-                <td class="widget-td">{{ item.Version }}</td>
-                <td class="widget-td">{{ item.AuthenticationName }}</td>
-                <td class="widget-td">{{ item.HeartbeatInterval }}</td>
-                <td class="widget-td">{{ item.HostedHealthService }}</td>
-                <td class="widget-td">{{ item.MaximumQueueSizeBytes }}</td>
                 <td class="widget-td">
                     {% for ip_addr in item.IPAddress %}
                         {% if ip_addr %}
@@ -204,17 +195,28 @@ and limitations under the License.
                             <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                         </a>
                         {% endif %}
-                        {% if not forloop.last %}<br/> {% endif %}
+                        <br/>
                     {% endfor %}
                 </td>
                 <td class="widget-td">
                     <a href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['host name'], 'value': '{{ item.ComputerName }}' }], 0, {{ container.id }}, null, false);">
-                        {{ item.ComputerName }}
+                       onclick="context_menu(this, [{'contains': ['port'], 'value': '{{ item.CommunicationPort }}' }], 0, {{ container.id }}, null, false);">
+                        {{ item.CommunicationPort }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                     </a>
                 </td>
+                <td class="widget-td">
+                    <a href="javascript:;"
+                       onclick="context_menu(this, [{'contains': ['domain'], 'value': '{{ item.Domain }}' }], 0, {{ container.id }}, null, false);">
+                        {{ item.Domain }}
+                        &nbsp;
+                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
+                    </a>
+                </td>
+                <td class="widget-td">{{ item.HealthState }}</td>
+                <td class="widget-td">{{ item.NetworkName }}</td>
+                <td class="widget-td">{{ item.DisplayName }}</td>
                 <td class="widget-td">
                     <a href="javascript:;"
                        onclick="context_menu(this, [{'contains': ['host name'], 'value': '{{ item.Name }}' }], 0, {{ container.id }}, null, false);">
@@ -224,17 +226,16 @@ and limitations under the License.
                     </a>
                 </td>
                 <td class="widget-td">{{ item.ProxyingEnabled }}</td>
+                <td class="widget-td">{{ item.LastModified }}</td>
+                <td class="widget-td">{{ item.InstallTime }}</td>
+                <td class="widget-td">{{ item.Version }}</td>
+                <td class="widget-td">{{ item.AuthenticationName }}</td>
+                <td class="widget-td">{{ item.CreateListener }}</td>
+                <td class="widget-td">{{ item.HostedHealthService }}</td>
+                <td class="widget-td">{{ item.MaximumQueueSizeBytes }}</td>
                 <td class="widget-td">{{ item.ManuallyInstalled }}</td>
                 <td class="widget-td">{{ item.ManagementGroupId }}</td>
                 <td class="widget-td">{{ item.ManagementGroup }}</td>
-                <td class="widget-td">
-                    <a href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['domain'], 'value': '{{ item.Domain }}' }], 0, {{ container.id }}, null, false);">
-                        {{ item.Domain }}
-                        &nbsp;
-                        <span class="fa fa-caret-down" style="font-size: smaller;"></span>
-                    </a>
-                </td>
                 <td class="widget-td">{{ item.ActionAccountIdentity }}</td>
                 <td class="widget-td">{{ item.MaximumSizeOfAllTransferredFilesBytes }}</td>
                 <td class="widget-td">{{ item.HostComputer }}</td>
@@ -249,8 +250,7 @@ and limitations under the License.
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
                     </a>
                 </td>
-                <td class="widget-td">{{ item.NetworkName }}</td>
-                <td class="widget-td">{{ item.Id }}</td>
+                <td class="widget-td">{{ item.HeartbeatInterval }}</td>
             </tr>
             {% endfor %}
             </tbody>
