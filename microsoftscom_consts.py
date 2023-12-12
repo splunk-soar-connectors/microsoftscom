@@ -18,7 +18,11 @@
 MSSCOM_CONFIG_SERVER_URL = "server_url"
 MSSCOM_CONFIG_USERNAME = "username"
 MSSCOM_CONFIG_PASSWORD = "password"  # pragma: allowlist secret
+MSSCOM_CONFIG_AUTH_METHOD = "auth_method"
 MSSCOM_CONFIG_VERIFY_SSL = "verify_server_cert"
+
+MSSCOM_DEFAULT_AUTH_METHOD = "default"
+
 MSSCOM_SERVER_URL = "{url}/wsman"
 MSSCOM_CONNECTING_ENDPOINT_MSG = "Connecting to endpoint"
 MSSCOM_ERROR_SERVER_CONNECTION = "Connection failed"
