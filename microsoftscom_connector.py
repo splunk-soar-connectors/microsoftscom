@@ -93,7 +93,10 @@ class MicrosoftScomConnector(BaseConnector):
 
         return Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
                             username=self._username, password=self._password,
-                            server_cert_validation=server_cert_validation,  cert_pem=self._cert_pem_path, cert_key_pem=self._cert_key_pem_path, ca_trust_path=self._cert_ca_trust_path)
+                            server_cert_validation=server_cert_validation,
+                            cert_pem=self._cert_pem_path,
+                            cert_key_pem=self._cert_key_pem_path,
+                            ca_trust_path=self._cert_ca_trust_path)
 
     def _execute_ps_command(self, action_result, ps_command):
         """ This function is used to execute power shell command.
