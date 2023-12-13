@@ -6,7 +6,7 @@ Connector Version: 2.2.1
 Product Vendor: Microsoft  
 Product Name: SCOM  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.0.0  
+Minimum Product Version: 6.1.1  
 
 This app integrates with Microsoft System Center Operations Manager (SCOM) to execute investigative actions
 
@@ -31,7 +31,12 @@ to true on SCOM server.
 By default WinRM HTTP uses port 80. On Windows 7 and higher the default port is 5985.  
 By default WinRM HTTPS uses port 443. On Windows 7 and higher the default port is 5986.
 
-This app uses NTLM authorization by default when FIPS is disabled and basic HTTP when FIPS is enabled. 
+This app uses different default authorisation method, when FIPS is enabled:
+| FIPS     | Default auth |
+|----------|--------------|
+| Enabled  | Basic HTTP   |
+| Disabled | NTLM         |
+
 In asset configuration other authentication methods are available. 
 
 The use of the HTTP_PROXY and HTTPS_PROXY environment variables is
