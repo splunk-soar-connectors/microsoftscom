@@ -93,7 +93,7 @@ class MicrosoftScomConnector(BaseConnector):
 
         return Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
                             username=self._username, password=self._password,
-                            server_cert_validation=server_cert_validation)
+                            server_cert_validation=server_cert_validation,  cert_pem=self._cert_pem_path, cert_key_pem=self._cert_key_pem_path, ca_trust_path=self._cert_ca_trust_path)
 
     def _execute_ps_command(self, action_result, ps_command):
         """ This function is used to execute power shell command.
@@ -376,10 +376,13 @@ class MicrosoftScomConnector(BaseConnector):
         self._server_url = config[MSSCOM_CONFIG_SERVER_URL].strip("/")
         self._username = config[MSSCOM_CONFIG_USERNAME]
         self._password = config[MSSCOM_CONFIG_PASSWORD]
-        self._auth_type = config.get(MSSCOM_CONFIG_AUTH_METHOD, MSSCOM_DEFAULT_AUTH_METHOD)
 
         # Optional config parameter
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
+        self._auth_type = config.get(MSSCOM_CONFIG_AUTH_METHOD, MSSCOM_DEFAULT_AUTH_METHOD)
+        self._cert_pem_path = config.get(MSSCOM_CONFIG_CERT_PEM)
+        self._cert_key_pem_path = config.get(MSSCOM_CONFIG_CERT_KEY_PEM)
+        self._cert_ca_trust_path = config.get(MSSCOM_CONFIG_CA_TRUST, MSSCOM_DEFAULT_TRUST_CA)
 
         return phantom.APP_SUCCESS
 
