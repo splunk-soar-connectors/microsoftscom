@@ -84,16 +84,12 @@ class MicrosoftScomConnector(BaseConnector):
         return fips_enabled
 
     def _get_protocol(self):
-        server_cert_validation = 'ignore'
-        transport = 'ntlm'
-
         if self._auth_type != MSSCOM_DEFAULT_AUTH_METHOD:
             transport = self._auth_type
-        elif self._get_fips_enabled():
-            transport = 'basic'
+        else:
+            transport = 'basic' if self._get_fips_enabled() else "ntlm"
 
-        if self._verify_server_cert:
-            server_cert_validation = 'validate'
+        server_cert_validation = 'validate' if self._verify_server_cert else 'ignore'
 
         return Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
                             username=self._username, password=self._password,
@@ -380,7 +376,7 @@ class MicrosoftScomConnector(BaseConnector):
         self._server_url = config[MSSCOM_CONFIG_SERVER_URL].strip("/")
         self._username = config[MSSCOM_CONFIG_USERNAME]
         self._password = config[MSSCOM_CONFIG_PASSWORD]
-        self._auth_type = config[MSSCOM_CONFIG_AUTH_METHOD]
+        self._auth_type = config.get(MSSCOM_CONFIG_AUTH_METHOD, MSSCOM_DEFAULT_AUTH_METHOD)
 
         # Optional config parameter
         self._verify_server_cert = config.get(MSSCOM_CONFIG_VERIFY_SSL, False)
