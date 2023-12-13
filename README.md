@@ -6,7 +6,7 @@ Connector Version: 2.2.15
 Product Vendor: Microsoft  
 Product Name: SCOM  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.0.1  
+Minimum Product Version: 6.1.1  
 
 This app integrates with Microsoft System Center Operations Manager (SCOM) to execute investigative actions
 
