@@ -2,7 +2,7 @@
 # Microsoft SCOM
 
 Publisher: Splunk  
-Connector Version: 2.2.1  
+Connector Version: 2.2.2  
 Product Vendor: Microsoft  
 Product Name: SCOM  
 Product Version Supported (regex): ".\*"  
@@ -11,7 +11,7 @@ Minimum Product Version: 6.0.0
 This app integrates with Microsoft System Center Operations Manager (SCOM) to execute investigative actions
 
 [comment]: # "    File: README.md"
-[comment]: # "    Copyright (c) 2017-2023 Splunk Inc."
+[comment]: # "    Copyright (c) 2017-2024 Splunk Inc."
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
 [comment]: # "you may not use this file except in compliance with the License."

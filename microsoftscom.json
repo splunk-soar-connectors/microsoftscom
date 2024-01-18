@@ -9,8 +9,8 @@
     "product_name": "SCOM",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2017-2023 Splunk Inc.",
-    "app_version": "2.2.1",
+    "license": "Copyright (c) 2017-2024 Splunk Inc.",
+    "app_version": "2.2.2",
     "utctime_updated": "2023-10-31T10:20:48.000000Z",
     "package_name": "phantom_microsoftscom",
     "main_module": "microsoftscom_connector.py",
@@ -1073,24 +1073,12 @@
     "pip39_dependencies": {
         "wheel": [
             {
-                "module": "certifi",
-                "input_file": "wheels/py3/certifi-2023.7.22-py3-none-any.whl"
-            },
-            {
                 "module": "cffi",
                 "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
-                "module": "charset_normalizer",
-                "input_file": "wheels/py39/charset_normalizer-3.3.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
-            },
-            {
                 "module": "cryptography",
                 "input_file": "wheels/py3/cryptography-41.0.5-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
-            },
-            {
-                "module": "idna",
-                "input_file": "wheels/py3/idna-3.4-py3-none-any.whl"
             },
             {
                 "module": "pycparser",
@@ -1105,20 +1093,12 @@
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
-            },
-            {
                 "module": "requests_ntlm",
                 "input_file": "wheels/py3/requests_ntlm-1.2.0-py3-none-any.whl"
             },
             {
                 "module": "six",
                 "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "urllib3",
-                "input_file": "wheels/py3/urllib3-2.0.7-py3-none-any.whl"
             },
             {
                 "module": "xmltodict",
