@@ -3,11 +3,6 @@ Copyright (c) 2017-2024 Splunk Inc.
 
 Third-party Software Attributions:
 
-Library: ntlm-auth
-Version: 1.5.0
-License: MIT
-Copyright 2018 Jordan Borean, Red Hat
-
 Library: pycparser
 Version: 2.21
 License: BSD 3
