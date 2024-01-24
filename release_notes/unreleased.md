@@ -1,2 +1,3 @@
 **Unreleased**
-* Updated requests, certifi dependencies in order to use platform packages [PAPP-31096, PAPP-30822]
+* Cleaned up dependencies and did a small upgrade due to cryptography package vulnerabilities [PAPP-32290]
+* Updated requests, certifi dependencies in order to use platform packages [PAPP-31096,PAPP-30822]
