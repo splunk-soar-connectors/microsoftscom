@@ -1,6 +1,6 @@
 # File: microsoftscom_connector.py
 #
-# Copyright (c) 2017-2023 Splunk Inc.
+# Copyright (c) 2017-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ class MicrosoftScomConnector(BaseConnector):
     def _execute_ps_command(self, action_result, ps_command):
         """ This function is used to execute power shell command.
 
-        :param action_result: object of ActionResult
+        :param action_result: object of ActionResult class
         :param ps_command: power shell command
         :return: output of executed power shell command
         """
