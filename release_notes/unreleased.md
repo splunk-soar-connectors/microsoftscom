@@ -1,2 +1,1 @@
 **Unreleased**
-* Remove the requests, urllib3, certifi, and cryptography dependencies, and instead use the ones built into the SOAR platform [PAPP-33590]
