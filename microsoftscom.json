@@ -1070,34 +1070,6 @@
             "versions": "EQ(*)"
         }
     ],
-    "pip_dependencies": {
-        "wheel": [
-            {
-                "module": "cffi",
-                "input_file": "wheels/py36/cffi-1.15.1-cp36-cp36m-manylinux1_x86_64.manylinux_2_5_x86_64.manylinux_2_28_x86_64.whl"
-            },
-            {
-                "module": "cryptography",
-                "input_file": "wheels/py36/cryptography-40.0.2-cp36-abi3-manylinux_2_28_x86_64.whl"
-            },
-            {
-                "module": "ntlm_auth",
-                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "pycparser",
-                "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
-            },
-            {
-                "module": "pywinrm",
-                "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
-            },
-            {
-                "module": "requests_ntlm",
-                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
-            }
-        ]
-    },
     "pip39_dependencies": {
         "wheel": [
             {
