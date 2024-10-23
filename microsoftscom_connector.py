@@ -46,7 +46,7 @@ class MicrosoftScomConnector(BaseConnector):
         self._verify_server_cert = False
 
     def _handle_test_connectivity(self, param):
-        """ This function tests the connectivity of an asset with given credentials.
+        """This function tests the connectivity of an asset with given credentials.
 
         :param param: (not used in this method)
         :return: status success/failure
@@ -83,7 +83,7 @@ class MicrosoftScomConnector(BaseConnector):
         return fips_enabled
 
     def _execute_ps_command(self, action_result, ps_command):
-        """ This function is used to execute power shell command.
+        """This function is used to execute power shell command.
 
         :param action_result: object of ActionResult class
         :param ps_command: power shell command
@@ -91,44 +91,43 @@ class MicrosoftScomConnector(BaseConnector):
         """
 
         resp_output = None
-        server_cert_validation = 'ignore'
-        transport = 'ntlm'
+        server_cert_validation = "ignore"
+        transport = "ntlm"
 
         if self._get_fips_enabled():
-            transport = 'basic'
+            transport = "basic"
 
         if self._verify_server_cert:
-            server_cert_validation = 'validate'
+            server_cert_validation = "validate"
 
-        protocol = Protocol(endpoint=MSSCOM_SERVER_URL.format(url=self._server_url), transport=transport,
-                            username=self._username, password=self._password,
-                            server_cert_validation=server_cert_validation)
+        protocol = Protocol(
+            endpoint=MSSCOM_SERVER_URL.format(url=self._server_url),
+            transport=transport,
+            username=self._username,
+            password=self._password,
+            server_cert_validation=server_cert_validation,
+        )
 
         try:
             shell_id = protocol.open_shell()
         except InvalidCredentialsError as credentials_error:
             # In case of invalid credentials
             self.debug_print(MSSCOM_INVALID_CREDENTIAL_ERROR, credentials_error)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERROR,
-                                            credentials_error), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_INVALID_CREDENTIAL_ERROR, credentials_error), resp_output
         except exceptions.SSLError as ssl_error:
             # In case of SSL error
             self.debug_print(MSSCOM_ERROR_BAD_HANDSHAKE, ssl_error)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_BAD_HANDSHAKE,
-                                            ssl_error), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_BAD_HANDSHAKE, ssl_error), resp_output
         except exceptions.ConnectionError as conn_error:
             # In case of connection error
             self.debug_print(MSSCOM_ERROR_SERVER_CONNECTION, conn_error)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION,
-                                            conn_error), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_ERROR_SERVER_CONNECTION, conn_error), resp_output
         except WinRMTransportError as transport_error:
             self.debug_print(MSSCOM_TRANSPORT_ERROR, transport_error)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERROR,
-                                            transport_error), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_TRANSPORT_ERROR, transport_error), resp_output
         except Exception as e:
             self.debug_print(MSSCOM_EXCEPTION_OCCURRED, e)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
-                                            e), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED, e), resp_output
 
         try:
             # Execute command
@@ -138,18 +137,16 @@ class MicrosoftScomConnector(BaseConnector):
             protocol.close_shell(shell_id)
         except Exception as err:
             self.debug_print(MSSCOM_EXCEPTION_OCCURRED, err)
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
-                                            err), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED, err), resp_output
 
         # In case of error in command execution
         if status_code:
-            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED,
-                                            resp_error), resp_output
+            return action_result.set_status(phantom.APP_ERROR, MSSCOM_EXCEPTION_OCCURRED, resp_error), resp_output
 
         return action_result.set_status(phantom.APP_SUCCESS), resp_output
 
     def _handle_list_endpoints(self, param):
-        """ This function is used to list all endpoints.
+        """This function is used to list all endpoints.
 
         :param param: dictionary of input parameters
         :return: status success/failure
@@ -164,8 +161,9 @@ class MicrosoftScomConnector(BaseConnector):
         domain = param.get(MSSCOM_PARAM_DOMAIN, "*")
 
         # Prepare power shell command
-        command = "{cmd} -DNSHostName *.{domain} | {json}".format(cmd=MSSCOM_GET_SCOM_AGENT_COMMAND, domain=domain,
-                                                                  json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+        command = "{cmd} -DNSHostName *.{domain} | {json}".format(
+            cmd=MSSCOM_GET_SCOM_AGENT_COMMAND, domain=domain, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND
+        )
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -190,12 +188,12 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Update summary
         summary = action_result.update_summary({})
-        summary['total_endpoints'] = action_result.get_data_size()
+        summary["total_endpoints"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_alerts(self, param):
-        """ This function is used to get system's health information.
+        """This function is used to get system's health information.
 
         :param param: dictionary of input parameters
         :return: status success/failure
@@ -211,12 +209,11 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Prepare power shell command to execute
         if computer_name:
-            command = "{cmd} -ComputerName \"{computer_name}\" | {json}".format(cmd=MSSCOM_GET_SCOM_ALERT_COMMAND,
-                                                                                computer_name=computer_name,
-                                                                                json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+            command = '{cmd} -ComputerName "{computer_name}" | {json}'.format(
+                cmd=MSSCOM_GET_SCOM_ALERT_COMMAND, computer_name=computer_name, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND
+            )
         else:
-            command = "{cmd} | {json}".format(cmd=MSSCOM_GET_SCOM_ALERT_COMMAND,
-                                              json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+            command = "{cmd} | {json}".format(cmd=MSSCOM_GET_SCOM_ALERT_COMMAND, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -244,7 +241,7 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Update summary
         summary = action_result.update_summary({})
-        summary['total_alerts'] = action_result.get_data_size()
+        summary["total_alerts"] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -263,7 +260,7 @@ class MicrosoftScomConnector(BaseConnector):
         return True
 
     def _handle_get_device_info(self, param):
-        """ This function is used to list all endpoints.
+        """This function is used to list all endpoints.
 
         :param param: dictionary of input parameters
         :return: status success/failure
@@ -283,8 +280,7 @@ class MicrosoftScomConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_PARAM_NOT_SPECIFIED.format("ip", "computer_name"))
 
         # Prepare power shell command
-        command = "{cmd} -DNSHostName *.* | {json}".format(cmd=MSSCOM_GET_SCOM_AGENT_COMMAND,
-                                                           json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+        command = "{cmd} -DNSHostName *.* | {json}".format(cmd=MSSCOM_GET_SCOM_AGENT_COMMAND, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -330,7 +326,7 @@ class MicrosoftScomConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS, "Device found")
 
     def handle_action(self, param):
-        """ This function gets current action identifier and calls member function of its own to handle the action.
+        """This function gets current action identifier and calls member function of its own to handle the action.
 
         :param param: dictionary which contains information about the actions to be executed
         :return: status success/failure
@@ -338,10 +334,10 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Dictionary mapping each action with its corresponding actions
         action_mapping = {
-            'test_connectivity': self._handle_test_connectivity,
-            'list_endpoints': self._handle_list_endpoints,
-            'list_alerts': self._handle_list_alerts,
-            'get_device_info': self._handle_get_device_info
+            "test_connectivity": self._handle_test_connectivity,
+            "list_endpoints": self._handle_list_endpoints,
+            "list_alerts": self._handle_list_alerts,
+            "get_device_info": self._handle_get_device_info,
         }
         action = self.get_action_identifier()
         try:
@@ -353,7 +349,7 @@ class MicrosoftScomConnector(BaseConnector):
         return run_action(param)
 
     def initialize(self):
-        """ This is an optional function that can be implemented by the AppConnector derived class. Since the
+        """This is an optional function that can be implemented by the AppConnector derived class. Since the
         configuration dictionary is already validated by the time this function is called, it's a good place to do any
         extra initialization of any internal modules. This function MUST return a value of either phantom.APP_SUCCESS or
         phantom.APP_ERROR. If this function returns phantom.APP_ERROR, then AppConnector::handle_action will not get
@@ -381,7 +377,7 @@ class MicrosoftScomConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def finalize(self):
-        """ This function gets called once all the param dictionary elements are looped over and no more handle_action
+        """This function gets called once all the param dictionary elements are looped over and no more handle_action
         calls are left to be made. It gives the AppConnector a chance to loop through all the results that were
         accumulated by multiple handle_action function calls and create any summary if required. Another usage is
         cleanup, disconnect from remote devices etc.
@@ -392,7 +388,7 @@ class MicrosoftScomConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import sys
 
