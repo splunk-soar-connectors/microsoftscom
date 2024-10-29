@@ -14,7 +14,7 @@
 [comment]: # ""
 Windows Remote Management(WinRM) should be enabled on the MS SCOM Server for the app to run commands
 remotely. To allow HTTP communication, WinRM config parameter **AllowUnencrypted** should be changed
-to true on SCOM server. 
+to true on SCOM server.
 
 By default WinRM HTTP uses port 80. On Windows 7 and higher the default port is 5985.  
 By default WinRM HTTPS uses port 443. On Windows 7 and higher the default port is 5986.
