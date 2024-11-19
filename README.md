@@ -2,7 +2,7 @@
 # Microsoft SCOM
 
 Publisher: Splunk  
-Connector Version: 2.2.2  
+Connector Version: 2.2.3  
 Product Vendor: Microsoft  
 Product Name: SCOM  
 Product Version Supported (regex): ".\*"  
