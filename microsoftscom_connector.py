@@ -1,6 +1,6 @@
 # File: microsoftscom_connector.py
 #
-# Copyright (c) 2017-2024 Splunk Inc.
+# Copyright (c) 2017-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,11 +31,9 @@ from microsoftscom_consts import *
 
 
 class MicrosoftScomConnector(BaseConnector):
-
     def __init__(self):
-
         # Call the BaseConnectors init first
-        super(MicrosoftScomConnector, self).__init__()
+        super().__init__()
 
         self._state = None
 
@@ -152,7 +150,7 @@ class MicrosoftScomConnector(BaseConnector):
         :return: status success/failure
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -161,9 +159,7 @@ class MicrosoftScomConnector(BaseConnector):
         domain = param.get(MSSCOM_PARAM_DOMAIN, "*")
 
         # Prepare power shell command
-        command = "{cmd} -DNSHostName *.{domain} | {json}".format(
-            cmd=MSSCOM_GET_SCOM_AGENT_COMMAND, domain=domain, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND
-        )
+        command = f"{MSSCOM_GET_SCOM_AGENT_COMMAND} -DNSHostName *.{domain} | {MSSCOM_CONVERT_TO_CSV_JSON_COMMAND}"
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -199,7 +195,7 @@ class MicrosoftScomConnector(BaseConnector):
         :return: status success/failure
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -209,11 +205,9 @@ class MicrosoftScomConnector(BaseConnector):
 
         # Prepare power shell command to execute
         if computer_name:
-            command = '{cmd} -ComputerName "{computer_name}" | {json}'.format(
-                cmd=MSSCOM_GET_SCOM_ALERT_COMMAND, computer_name=computer_name, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND
-            )
+            command = f'{MSSCOM_GET_SCOM_ALERT_COMMAND} -ComputerName "{computer_name}" | {MSSCOM_CONVERT_TO_CSV_JSON_COMMAND}'
         else:
-            command = "{cmd} | {json}".format(cmd=MSSCOM_GET_SCOM_ALERT_COMMAND, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+            command = f"{MSSCOM_GET_SCOM_ALERT_COMMAND} | {MSSCOM_CONVERT_TO_CSV_JSON_COMMAND}"
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -266,7 +260,7 @@ class MicrosoftScomConnector(BaseConnector):
         :return: status success/failure
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -280,7 +274,7 @@ class MicrosoftScomConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, MSSCOM_PARAM_NOT_SPECIFIED.format("ip", "computer_name"))
 
         # Prepare power shell command
-        command = "{cmd} -DNSHostName *.* | {json}".format(cmd=MSSCOM_GET_SCOM_AGENT_COMMAND, json=MSSCOM_CONVERT_TO_CSV_JSON_COMMAND)
+        command = f"{MSSCOM_GET_SCOM_AGENT_COMMAND} -DNSHostName *.* | {MSSCOM_CONVERT_TO_CSV_JSON_COMMAND}"
 
         # Execute power shell command
         status, response = self._execute_ps_command(action_result, MSSCOM_PS_COMMAND.format(command=command))
@@ -344,7 +338,7 @@ class MicrosoftScomConnector(BaseConnector):
             run_action = action_mapping[action]
         except Exception as e:
             self.debug_print(e)
-            raise ValueError("action {action} is not supported".format(action=action))
+            raise ValueError(f"action {action} is not supported")
 
         return run_action(param)
 
@@ -389,7 +383,6 @@ class MicrosoftScomConnector(BaseConnector):
 
 
 if __name__ == "__main__":
-
     import sys
 
     import pudb
