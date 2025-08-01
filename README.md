@@ -1,7 +1,7 @@
 # Microsoft SCOM
 
 Publisher: Splunk \
-Connector Version: 2.2.5 \
+Connector Version: 2.2.6 \
 Product Vendor: Microsoft \
 Product Name: SCOM \
 Minimum Product Version: 6.2.2
